@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "erp-atlas": {
+      "command": "uv",
+      "args": ["run", "--directory", ".", "atlas", "mcp"]
+    }
+  }
+}

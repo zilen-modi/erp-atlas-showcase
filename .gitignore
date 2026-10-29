@@ -1,0 +1,12 @@
+.data/
+.cache/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+
+# local configuration (real hosts, repo origin, organisation name)
+config/policy.yaml

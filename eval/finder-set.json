@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "note": "Accuracy cases for Test data's 'Describe the record you need'. Each case is a tester's description and what the criteria must contain. Expected conditions name fields by attribute number, so DICT synonyms count (MODE and S/ORD# are both <2>). op: '=' or '#' with values, 'filled' (has a value), 'range' (GE/LE/GT/LT), 'any' (constrained somehow). Only status=verified cases count toward the score; a draft becomes verified when an SME confirms `expect` and sets reviewed_by. `keys` lists known-good records the criteria must find (optional). This public copy keeps two illustrative cases.",
+  "cases": [
+    {
+      "id": "FD-01",
+      "status": "draft",
+      "file": "PRODUCT",
+      "description": "with serial",
+      "expect": {
+        "conditions": [
+          {
+            "attr": 149,
+            "op": "=",
+            "values": [
+              "Y"
+            ]
+          }
+        ]
+      },
+      "note": "Serial-number-required product: SERIALNUM <149> = Y."
+    },
+    {
+      "id": "FD-02",
+      "status": "draft",
+      "file": "TRANSFER",
+      "description": "an open transfer that has been shipped",
+      "expect": {
+        "conditions": [
+          {
+            "attr": 2,
+            "op": "=",
+            "values": [
+              "S"
+            ]
+          }
+        ]
+      },
+      "note": "MODE <2> = S means shipped and not yet received."
+    }
+  ]
+}

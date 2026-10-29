@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "slice": "transfer",
+  "note": "Draft questions for the transfer slice. `expected` must be written or confirmed by an SME before a case counts; status=draft cases are excluded from scoring. Each verified case pins the facts/lines it depends on so a regression names the lesson. This public copy keeps two illustrative cases; the real set is client-specific.",
+  "cases": [
+    {
+      "id": "XF-01",
+      "status": "draft",
+      "q": "Which programs change a transfer's status to shipped, and where is the record saved?",
+      "expected": "LG.XFER.MAINT sets TRANSFER<2> to S when the user ships from the transfer screen and writes the record back through IORELEASE; LG.DOC.READY sets it when a shipment-ready document is completed.",
+      "must_cite": [
+        "LG.XFER.MAINT",
+        "LG.DOC.READY"
+      ]
+    },
+    {
+      "id": "XF-02",
+      "status": "draft",
+      "q": "Where does a transfer's required date come from?",
+      "expected": "It is typed on the transfer screen, or set to today's date when a transfer is created from a barcode requisition.",
+      "must_cite": [
+        "LG.XFER.MAINT"
+      ]
+    }
+  ]
+}

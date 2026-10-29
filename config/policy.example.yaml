@@ -1,0 +1,49 @@
+# ERP Atlas runtime policy (template). Copy to config/policy.yaml, which is git-ignored, and fill in
+# your own values. Paths are relative to the erp-atlas repo root.
+#
+# The live endpoint allowlist is NOT configurable -- it is hard-coded in
+# atlas/sources/live.py so no config edit can widen it to /routine/call or /w5/*.
+
+organisation:
+  name: ""                  # your organisation's name, shown on signs in the network view
+
+environment: TEST            # label for the server the python layer reads (e.g. TEST)
+
+live:
+  base_url: http://localhost:6000/api/v1   # use localhost: TrustedHost rejects 127.0.0.1
+  timeout_s: 120
+  min_interval_s: 1.0        # pacing: at most `parallel` calls started per this many seconds
+  parallel: 4                # record reads in flight at once for capture / quick compare
+                             # (program source syncs always run one at a time)
+  cache_dir: .cache/live
+  universe_host: 10.0.0.10   # UniVerse host, for the VPN status check only: a TCP connect, no data
+  universe_port: 31438
+  # Tables Atlas must never read record values from (sensitive data).
+  deny_tables: [CC.HISTORY, INTCLIENT, REM-CUS]
+
+git:
+  origin: https://github.com/your-org/legacy-erp.git   # the legacy ERP source repository
+  local_fallback: ../erp     # used only if the origin mirror cannot be cloned (it is shallow)
+  mirror: .data/erp.git      # Atlas's own mirror; the user's erp/ checkout is never touched
+  branch: main
+  index_paths: [src/BP, src/MENU-ITEMS, src/DICT, src/TEMPLATES, src/PROK, src/GUIBP, src/next/api-helpers, src/next/utilities]
+  filename_map: scripts/filename_map.json   # read from the mirror, restores sanitized Pick names
+
+store: .data/atlas.db
+
+sync:
+  live_budget: 25            # programs re-fetched per `atlas sync --live` run
+
+slices:
+  transfer:
+    seeds: [LG.XFER.MENU, LG.XFER.MAINT]
+    menus: [M4401]
+    dicts: [TRANSFER, TRANSFER-LOG, TRANSFER-HIST]
+    expand_calls: 1          # one hop of CALL edges from the seeds
+
+chat:
+  # Claude runs on subscriptions only: each person's own (Account → Claude), or the Claude Code login of the
+  # machine running Atlas if an admin allows it. ANTHROPIC_API_KEY is ignored, so nothing is billed per call.
+  model: claude-opus-5
+  effort: high                # low | medium | high | xhigh | max
+  max_tool_rounds: 25         # hard stop for one answer's agent loop
